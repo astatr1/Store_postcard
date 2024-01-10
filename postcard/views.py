@@ -4,17 +4,20 @@ from django.views.generic import ListView, DetailView
 
 
 class PostcardHome(ListView):
-    template_name = 'postcard/index.html'
+    template_name = 'index.html'
     title_page = 'Магазин открыток'
+
+    def get_queryset(self):
+        return self.queryset
 
 
 class ShowPostcard(DetailView):
-    template_name = 'postcard/postcard.html'
+    template_name = 'postcard.html'
     slug_url_kwarg = 'postcard_slug'
 
 
 class PostcardCategory(ListView):
-    template_name = 'postcard/index.html'
+    template_name = 'index.html'
 
 
 def page_not_found(request, exception):

@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 
 class Postcard(models.Model):
@@ -12,6 +13,7 @@ class Postcard(models.Model):
     content = models.TextField(blank=True, verbose_name='Описание открытки')
     time_create = models.DateTimeField(auto_now_add=True, verbose_name='Время создания')
     time_update = models.DateTimeField(auto_now=True, verbose_name='Время изменения')
+    time_published = models.DateTimeField(default=timezone.now, verbose_name='Время публикации')
     is_published = models.BooleanField(choices=tuple(map(lambda x: (bool(x[0]), x[1]), Status.choices)), default=Status.DRAFT, verbose_name='Статус')
 
 
