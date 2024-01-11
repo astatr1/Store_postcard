@@ -3,6 +3,11 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 
 
+class PublishedManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(is_published=Post.Status.PUBLISHED)
+
+
 class Post(models.Model):
     class Status(models.IntegerChoices):
         DRAFT = 0, 'Черновик'
@@ -19,6 +24,9 @@ class Post(models.Model):
     is_published = models.BooleanField(choices=tuple(
         map(lambda x: (bool(x[0]), x[1]), Status.choices)),
         default=Status.DRAFT, verbose_name='Статус')
+
+    objects = models.Manager()
+    published = PublishedManager()
 
     class Meta:
         ordering = ['-time_published']
