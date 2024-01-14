@@ -1,12 +1,14 @@
 from django.core.mail import send_mail
 from django.shortcuts import render, get_object_or_404
+from django.views.decorators.http import require_POST
 from django.views.generic import ListView, DetailView
 
-from .forms import EmailPostForm
-from .models import Post
+from .forms import EmailPostForm, CommentForm
+from .models import Post, Comment
 
 import os
 from dotenv import load_dotenv
+
 load_dotenv()
 
 
@@ -17,13 +19,23 @@ class PostListView(ListView):
     template_name = 'blog/post/list.html'
 
 
-class PostDetailView(DetailView):
-    template_name = 'blog/post/detail.html'
-    slug_url_kwarg = 'post_slug'
-    context_object_name = 'post'
+def post_detail(request, year, month, day, post):
 
-    def get_object(self, queryset=None):
-        return get_object_or_404(Post, slug=self.kwargs[self.slug_url_kwarg])
+    post = get_object_or_404(Post,
+                             is_published=Post.Status.PUBLISHED,
+                             slug=post,
+                             time_published__year=year,
+                             time_published__month=month,
+                             time_published__day=day)
+
+    comments = post.comments.filter(is_active=True)
+    form = CommentForm()
+    return render(request,
+                  'blog/post/detail.html',
+                  {'post': post,
+                   'comments': comments,
+                   'form': form})
+
 
 
 def post_share(request, post_id):
@@ -46,3 +58,17 @@ def post_share(request, post_id):
         form = EmailPostForm()
     return render(request, 'blog/post/share.html',
                   {'post': post, 'form': form, 'sent': sent})
+
+
+@require_POST
+def post_comment(request, post_id):
+    post = get_object_or_404(Post, id=post_id, is_published=Post.Status.PUBLISHED)
+    comment = None
+    # Комментарий был отправлен
+    form = CommentForm(data=request.POST)
+    if form.is_valid():
+        comment = form.save(commit=False)  # создаем экземпляр класса но не сохраняем в БД
+        comment.post = post  # назначаем пост комментарию
+        comment.save()
+    return render(request, 'blog/post/comment.html',
+                   {'post': post, 'form': form, 'comment': comment})
