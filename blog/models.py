@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse
+from taggit.managers import TaggableManager
 
 
 class PublishedManager(models.Manager):
@@ -29,6 +30,7 @@ class Post(models.Model):
     is_published = models.BooleanField(choices=tuple(
         map(lambda x: (bool(x[0]), x[1]), Status.choices)),
         default=Status.DRAFT, verbose_name='Статус')
+    tags = TaggableManager()
 
     objects = models.Manager()
     published = PublishedManager()
