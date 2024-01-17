@@ -1,0 +1,23 @@
+{% extends "store/base.html" %}
+{% load static %}
+
+{% block title %}
+ {{ postcard.title }}
+{% endblock %}
+{% block content %}
+ <div class="product-detail">
+ <img src="{% if postcard.image %}
+                {{ postcard.image.url }}
+            {% else %}
+                {% static "img/no_image.png" %}
+            {% endif %}">
+ <h1>{{ postcard.title }}</h1>
+ <h2>
+ <a href="{{ postcard.category.get_absolute_url }}">
+ {{ postcard.category }}
+ </a>
+ </h2>
+ <p class="price">${{ postcard.price }}</p>
+ {{ postcard.content|linebreaks }}
+ </div>
+{% endblock %}

@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.urls import reverse
 
 
 class Category(models.Model):
@@ -11,6 +12,9 @@ class Category(models.Model):
         indexes = [models.Index(fields=['name']),]
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
+
+    def get_absolute_url(self):
+        return reverse('store:store_by_category', args=[self.slug])
 
     def __str__(self):
         return self.name
@@ -40,6 +44,9 @@ class Postcard(models.Model):
                    models.Index(fields=['-time_created'])]
         verbose_name = 'Открытка'
         verbose_name_plural = 'Открытки'
+
+    def get_absolute_url(self):
+        return reverse('store:postcard_detail', args=[self.slug])
 
     def __str__(self):
         return self.title

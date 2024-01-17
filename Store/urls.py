@@ -11,7 +11,7 @@ sitemaps = {'post': PostSitemap}
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('postcard.urls')),
+    path('', include('postcard.urls', namespace='store')),
     path('blog/', include('blog.urls', namespace='blog')),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps},
          name='django.contrib.sitemaps.views.sitemap')
