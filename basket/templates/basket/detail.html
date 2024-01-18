@@ -1,0 +1,55 @@
+{% extends 'store/base.html' %}
+{% load static %}
+
+{% block title %}
+    Ваша корзина покупок
+{% endblock %}
+
+{% block content %}
+    <h1>Ваша корзина покупок</h1>
+    <table class="cart">
+    <thead>
+    <tr>
+        <th>Изображение</th>
+        <th>Наименование</th>
+        <th>Количество</th>
+        <th>Удалить</th>
+        <th>Цена</th>
+        <th>Общая стоимость</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for item in basket %}
+        {% with postcard=item.postcard %}
+            <tr>
+            <td>
+                <a href="{{ postcard.get_absolute_url }}">
+                    <img src="{% if postcard.image %}{{ postcard.image.url }}
+                    {% else %}{% static 'img/no_image.png' %}{% endif %}" >
+                </a>
+            </td>
+            <td>{{ postcard.title }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>
+                <form action="{% url "cart:cart_remove" product.id %}" method="post">
+                    <input type="submit" value="Remove">
+                    {% csrf_token %}
+                </form>
+            </td>
+            <td class="num">{{ item.price }} рублей</td>
+            <td class="num">{{ item.total_price }} рублей</td>
+            </tr>
+        {% endwith %}
+    {% endfor %}
+    <tr class="total">
+        <td>Итоговая сумма</td>
+        <td colspan="4"></td>
+        <td class="num">{{ basket.get_total_price }} рублей</td>
+    </tr>
+    </tbody>
+    </table>
+    <p class="text-right">
+    <a href="{% url 'store:store' %}" class="button light">Продолжить покупки</a>
+    <a href="#" class="button">Оформить заказ</a>
+    </p>
+{% endblock %}
