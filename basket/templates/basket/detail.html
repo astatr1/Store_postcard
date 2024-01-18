@@ -29,7 +29,14 @@
                 </a>
             </td>
             <td>{{ postcard.title }}</td>
-            <td>{{ item.quantity }}</td>
+            <td>
+                <form action="{% url 'basket:basket_add' postcard.id %}" method="post">
+                    {{ item.update_quantity_form.quantity }}
+                    {{ item.update_quantity_form.override }}
+                    <input type="submit" value="Применить">
+                    {% csrf_token %}
+                </form>
+            </td>
             <td>
                 <form action="{% url "basket:basket_remove" postcard.id %}" method="post">
                     <input type="submit" value="Удалить">
