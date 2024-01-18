@@ -2,6 +2,7 @@ from django.http import HttpResponseNotFound
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView
 from .models import Category, Postcard
+from basket.forms import BasketAddPostcardForm
 
 
 def postcard_list(request, category_slug=None):
@@ -19,8 +20,10 @@ def postcard_list(request, category_slug=None):
 
 def postcard_detail(request, slug):
     postcard = get_object_or_404(Postcard, slug=slug, available=True)
+    basket_postcard_form = BasketAddPostcardForm()
     return render(request, 'store/postcard/detail.html',
-                  {'postcard': postcard})
+                  {'postcard': postcard,
+                   'basket_postcard_form': basket_postcard_form})
 
 
 # class PostcardCategory(ListView):

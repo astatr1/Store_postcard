@@ -17,7 +17,12 @@
  {{ postcard.category }}
  </a>
  </h2>
- <p class="price">${{ postcard.price }}</p>
+ <p class="price">{{ postcard.price }} руб.</p>
+ <form action="{% url 'basket:basket_add' postcard.id %}" method="post">
+     {{ basket_postcard_form }}
+     {% csrf_token %}
+     <input type="submit" value="Добавить в корзину">
+ </form>
  {{ postcard.content|linebreaks }}
  </div>
 {% endblock %}

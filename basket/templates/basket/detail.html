@@ -31,20 +31,20 @@
             <td>{{ postcard.title }}</td>
             <td>{{ item.quantity }}</td>
             <td>
-                <form action="{% url "cart:cart_remove" product.id %}" method="post">
-                    <input type="submit" value="Remove">
+                <form action="{% url "basket:basket_remove" postcard.id %}" method="post">
+                    <input type="submit" value="Удалить">
                     {% csrf_token %}
                 </form>
             </td>
-            <td class="num">{{ item.price }} рублей</td>
-            <td class="num">{{ item.total_price }} рублей</td>
+            <td class="num">{{ item.price }} руб.</td>
+            <td class="num">{{ item.total_price }} руб.</td>
             </tr>
         {% endwith %}
     {% endfor %}
     <tr class="total">
         <td>Итоговая сумма</td>
         <td colspan="4"></td>
-        <td class="num">{{ basket.get_total_price }} рублей</td>
+        <td class="num">{{ basket.get_total_price }} руб.</td>
     </tr>
     </tbody>
     </table>
