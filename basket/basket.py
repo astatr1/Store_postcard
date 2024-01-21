@@ -7,9 +7,9 @@ class Basket:
     def __init__(self, request):
         """Инициализация корзины."""
         self.session = request.session
-        basket = self.session.get(settings.CART_SESSION_ID)
+        basket = self.session.get(settings.BASKET_SESSION_ID)
         if not basket:
-            basket = self.session[settings.CART_SESSION_ID] = {}
+            basket = self.session[settings.BASKET_SESSION_ID] = {}
         self.basket = basket
 
     def add(self, postcard, quantity=1, override_quantity=False):
@@ -55,6 +55,6 @@ class Basket:
 
     def clear(self):
         """Удаление корзины из сеанса"""
-        del self.basket[settings.CART_SESSION_ID]
+        del self.session[settings.BASKET_SESSION_ID]
         self.save()
         
