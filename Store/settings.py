@@ -48,9 +48,11 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
     'basket.apps.BasketConfig',
     'orders.apps.OrdersConfig',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -146,3 +148,7 @@ EMAIL_PORT = os.getenv('EMAIL_PORT')
 EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS')
 
 BASKET_SESSION_ID = 'basket'
+
+INTERNAL_IPS = [
+    '127.0.0.1',
+]

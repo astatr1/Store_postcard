@@ -16,7 +16,8 @@ urlpatterns = [
     path('orders/', include('orders.urls', namespace='orders')),
     path('', include('postcard.urls', namespace='store')),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps},
-         name='django.contrib.sitemaps.views.sitemap')
+         name='django.contrib.sitemaps.views.sitemap'),
+    path('__debug__/', include('debug_toolbar.urls')),
 ]
 
 handler404 = page_not_found
