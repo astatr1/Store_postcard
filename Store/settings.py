@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'basket.apps.BasketConfig',
     'orders.apps.OrdersConfig',
     'debug_toolbar',
+    'coupons.apps.CouponsConfig',
 ]
 
 MIDDLEWARE = [

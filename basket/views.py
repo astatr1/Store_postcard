@@ -3,6 +3,7 @@ from django.views.decorators.http import require_POST
 from postcard.models import Postcard
 from .basket import Basket
 from .forms import BasketAddPostcardForm
+from coupons.forms import CouponApplyForm
 
 
 @require_POST
@@ -30,5 +31,7 @@ def basket_detail(request):
     for item in basket:
         item['update_quantity_form'] = BasketAddPostcardForm(
             initial={'quantity': item['quantity'], 'override': True})
+    coupon_apply_form = CouponApplyForm
     return render(request, 'basket/detail.html',
-                  {'basket': basket})
+                  {'basket': basket,
+                   'coupon_apply_form': coupon_apply_form})
