@@ -147,6 +147,8 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = os.getenv('EMAIL_PORT')
 EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS')
 
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 BASKET_SESSION_ID = 'basket'
 
 INTERNAL_IPS = [

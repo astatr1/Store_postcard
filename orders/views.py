@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .models import OrderItem
 from .forms import OrderCreateForm
 from basket.basket import Basket
+from .tasks import order_created
 
 
 def order_create(request):
@@ -15,6 +16,7 @@ def order_create(request):
                                          price=item['price'],
                                          quantity=item['quantity'])
             basket.clear()  # После записи всех позиций в БД, корзина очищается
+            order_created.delay(order.id)  # Запуск асинхронного задания по отправке email
             return render(request, 'orders/order/created.html',
                           {'order': order})
     else:
