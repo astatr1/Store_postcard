@@ -10,7 +10,11 @@ def order_create(request):
     if request.method == 'POST':
         form = OrderCreateForm(request.POST)
         if form.is_valid():
-            order = form.save()
+            order = form.save(commit=False)
+            if basket.coupon:
+                order.coupon = basket.coupon
+                order.discount = basket.coupon.discount
+            order.save()
             for item in basket:
                 OrderItem.objects.create(order=order, postcard=item['postcard'],
                                          price=item['price'],
