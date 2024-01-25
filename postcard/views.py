@@ -1,8 +1,8 @@
 from django.http import HttpResponseNotFound
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import ListView, DetailView
 from .models import Category, Postcard
 from basket.forms import BasketAddPostcardForm
+from .recommender import Recommender
 
 
 def postcard_list(request, category_slug=None):
@@ -21,13 +21,12 @@ def postcard_list(request, category_slug=None):
 def postcard_detail(request, slug):
     postcard = get_object_or_404(Postcard, slug=slug, available=True)
     basket_postcard_form = BasketAddPostcardForm()
+    r = Recommender()
+    recommended_postcards = r.offer_postcard_for([postcard], 3)
     return render(request, 'store/postcard/detail.html',
                   {'postcard': postcard,
-                   'basket_postcard_form': basket_postcard_form})
-
-
-# class PostcardCategory(ListView):
-#     template_name = 'index.html'
+                   'basket_postcard_form': basket_postcard_form,
+                   'recommended_postcards': recommended_postcards})
 
 
 def page_not_found(request, exception):

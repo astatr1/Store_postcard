@@ -4,6 +4,7 @@ from postcard.models import Postcard
 from .basket import Basket
 from .forms import BasketAddPostcardForm
 from coupons.forms import CouponApplyForm
+from postcard.recommender import Recommender
 
 
 @require_POST
@@ -32,6 +33,15 @@ def basket_detail(request):
         item['update_quantity_form'] = BasketAddPostcardForm(
             initial={'quantity': item['quantity'], 'override': True})
     coupon_apply_form = CouponApplyForm
+
+    r = Recommender()
+    basket_postcards = [item['postcard'] for item in basket]
+    if basket_postcards:
+        recommended_postcards = r.offer_postcard_for(
+            basket_postcards, max_results=3)
+    else:
+        recommended_postcards = []
     return render(request, 'basket/detail.html',
                   {'basket': basket,
-                   'coupon_apply_form': coupon_apply_form})
+                   'coupon_apply_form': coupon_apply_form,
+                   'recommended_postcards': recommended_postcards})
